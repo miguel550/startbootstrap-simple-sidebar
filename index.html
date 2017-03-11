@@ -35,29 +35,11 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
-                        Start Bootstrap
+                        Unapec Credito Fundapec
                     </a>
                 </li>
                 <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">Shortcuts</a>
-                </li>
-                <li>
-                    <a href="#">Overview</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
-                </li>
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
+                    <a href="#">Estudiantes</a>
                 </li>
             </ul>
         </div>
@@ -68,10 +50,27 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>Simple Sidebar</h1>
-                        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><< Menu</a>
+                        <h1>Estudiantes</h1>
+                        <form id="form">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Matricula</th>
+                                    <th>Monto</th>
+                                </thead>
+                                <tbody>
+                                    <tr id="id0">
+                                        <td>20112495</td>
+                                        <td><input type="number" class="input-group"></td>
+                                    </tr>
+                                    <tr id="id1">
+                                        <td>20112496</td>
+                                        <td><input type="number" class="input-group"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="submit" class="btn btn-group" value="Enviar">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -92,6 +91,31 @@
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+    });
+    var token = "38dd9877da373f93efa19ecd9b9e145a5a757eaf";
+    function enviar(matricula, monto){
+        if(monto){
+            $.ajax('http://localhost:8000/api/v2/transacciones/',{
+                headers: {
+                    "Authorization": "Basic " + btoa("admin:password123")
+                },
+               method: 'POST',
+               data: {matricula: matricula, monto: monto},
+                success: function(){
+                   console.log('enviado ' + matricula);
+                }
+            });
+        }
+    }
+    $('#form').on('submit', function(event){
+        event.preventDefault();
+        for(var i = 0; i < 2;i++){
+            var row = document.getElementById("id" + i.toString());
+            var matricula = row.children[0].innerHTML;
+            var monto = row.children[1].children[0].value;
+            console.log(matricula, monto);
+            enviar(matricula, monto)
+        }
     });
     </script>
 
